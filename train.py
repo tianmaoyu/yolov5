@@ -455,39 +455,62 @@ def train(hyp, opt, device, tb_writer=None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    # 参数初始化,为空时 ，重头开始
     parser.add_argument('--weights', type=str, default='yolov5s.pt', help='initial weights path')
+    # 模型配置文件，yolo5l.yaml ,yolo5s.yaml ,yolo5m.yaml ,yolo5x.yaml  相关的模型
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
+    #data 下面的 4个 数据配置文件，
     parser.add_argument('--data', type=str, default='data/coco128.yaml', help='data.yaml path')
+    # 超参数- 配置文件中 有指定的数据集合
     parser.add_argument('--hyp', type=str, default='data/hyp.scratch.yaml', help='hyperparameters path')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch-size', type=int, default=16, help='total batch size for all GPUs')
     parser.add_argument('--img-size', nargs='+', type=int, default=[640, 640], help='[train, test] image sizes')
+    # 矩形框
     parser.add_argument('--rect', action='store_true', help='rectangular training')
+    # default="xx.pt" 断点续训练
     parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
+    # 只保存最后一个 checkpoint
     parser.add_argument('--nosave', action='store_true', help='only save final checkpoint')
+    # 是否只在最后测试
     parser.add_argument('--notest', action='store_true', help='only test final epoch')
+    # 锚点？？
     parser.add_argument('--noautoanchor', action='store_true', help='disable autoanchor check')
+    #超参数 进化
     parser.add_argument('--evolve', action='store_true', help='evolve hyperparameters')
+    # google云盘..已经关闭
     parser.add_argument('--bucket', type=str, default='', help='gsutil bucket')
     parser.add_argument('--cache-images', action='store_true', help='cache images for faster training')
     parser.add_argument('--image-weights', action='store_true', help='use weighted image selection for training')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
+    # 数据增强-图片进行缩放
     parser.add_argument('--multi-scale', action='store_true', help='vary img-size +/- 50%%')
+    # 图片进行旋转
     parser.add_argument('--single-cls', action='store_true', help='train multi-class data as single-class')
     parser.add_argument('--adam', action='store_true', help='use torch.optim.Adam() optimizer')
+    # 多gpu 训练
     parser.add_argument('--sync-bn', action='store_true', help='use SyncBatchNorm, only available in DDP mode')
     parser.add_argument('--local_rank', type=int, default=-1, help='DDP parameter, do not modify')
+    # 多线程加载数据
     parser.add_argument('--workers', type=int, default=0, help='maximum number of dataloader workers')
+    # 项目保存名称
     parser.add_argument('--project', default='runs/train', help='save to project/name')
+    # wandb 的实体
     parser.add_argument('--entity', default=None, help='W&B entity')
+    # 名称每次运行
     parser.add_argument('--name', default='exp', help='save to project/name')
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
+    # 数据加载方式
     parser.add_argument('--quad', action='store_true', help='quad dataloader')
+    # 学习速率-线性 或者 余弦
     parser.add_argument('--linear-lr', action='store_true', help='linear LR')
     parser.add_argument('--label-smoothing', type=float, default=0.0, help='Label smoothing epsilon')
+    # 上传wandb
     parser.add_argument('--upload_dataset', action='store_true', help='Upload dataset as W&B artifact table')
     parser.add_argument('--bbox_interval', type=int, default=-1, help='Set bounding-box image logging interval for W&B')
+    # 设置模型保存 ，该参数控制每隔多少个 epoch 保存模型一次。
     parser.add_argument('--save_period', type=int, default=-1, help='Log model after every "save_period" epoch')
+    # 数据集 artifact 的版本
     parser.add_argument('--artifact_alias', type=str, default="latest", help='version of dataset artifact to be used')
     opt = parser.parse_args()
 
