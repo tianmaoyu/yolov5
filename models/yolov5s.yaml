@@ -1,14 +1,20 @@
 # parameters
 nc: 80  # number of classes
+#  bottleneckCSP ：C 模块的缩放因子，将所有的 bottleneckCSP 模块的 bottleneck 乘上该参数得到最终个数； 如 [-1, 3, C3, [128]],  得到 3 乘以0.33 得 [-1, 1, C3, [128]]
 depth_multiple: 0.33  # model depth multiple
+#  backbone 和 head 有关的Covn 通道，全部乘以该系数 得到  如： Conv, [128, 3, 2] 得 128 乘以0.5=  Conv, [64, 3, 2]
 width_multiple: 0.50  # layer channel multiple
 
+
+# 分别对应  8 倍，16倍，32倍下采样后的 大小， 长，宽；
 # anchors
 anchors:
   - [10,13, 16,30, 33,23]  # P3/8
   - [30,61, 62,45, 59,119]  # P4/16
   - [116,90, 156,198, 373,326]  # P5/32
 
+# from :-1 表示上一层输出
+# number: 本模块重复次数， 1表示 一次，3 表示重复三次
 # YOLOv5 backbone
 backbone:
   # [from, number, module, args]

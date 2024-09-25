@@ -17,7 +17,7 @@ from utils.general import non_max_suppression, make_divisible, scale_coords, inc
 from utils.plots import color_list, plot_one_box
 from utils.torch_utils import time_synchronized
 
-
+# 填充， k 可能一个值，也可能多个值
 def autopad(k, p=None):  # kernel, padding
     # Pad to 'same'
     if p is None:
@@ -27,7 +27,7 @@ def autopad(k, p=None):  # kernel, padding
 
 def DWConv(c1, c2, k=1, s=1, act=True):
     # Depthwise convolution
-    return Conv(c1, c2, k, s, g=math.gcd(c1, c2), act=act)
+    return Conv(c1, c2, k, s, g=math.gcd(c1, c2), act=act) # math.gcd(c1, c2) 最大公约数
 
 
 class Conv(nn.Module):
@@ -115,6 +115,7 @@ class BottleneckCSP(nn.Module):
         self.cv4 = Conv(2 * c_, c2, 1, 1)
         self.bn = nn.BatchNorm2d(2 * c_)  # applied to cat(cv2, cv3)
         self.act = nn.LeakyReLU(0.1, inplace=True)
+        #  n 次 Bottleneck； * 把list 拆开
         self.m = nn.Sequential(*[Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)])
 
     def forward(self, x):
